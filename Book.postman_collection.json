@@ -1,0 +1,902 @@
+{
+	"info": {
+		"_postman_id": "57ee6b9d-1ad6-4924-ad53-536ebdaffaf9",
+		"name": "Book",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19965346"
+	},
+	"item": [
+		{
+			"name": "Get",
+			"item": [
+				{
+					"name": "Obtener Estado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"\r",
+									"pm.test('VALIDAR STATUS',()=>{\r",
+									"   pm.expect(response.status).to.eql('OK');\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/status",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tipo de libros",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									" \r",
+									" const response=pm.response.json();\r",
+									" const fictionBook=response.filter((books)=> books.type==='fiction');\r",
+									"\r",
+									" const books=fictionBook[0];\r",
+									" pm.test('libros de ficción',()=>{\r",
+									"     pm.expect(books).to.be.an('object');\r",
+									"     pm.expect(books.type).to.eql('fiction');\r",
+									"\r",
+									" });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/books?type=fiction",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "fiction"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tipo de libros falla",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"const mensajedeerror=Object.keys(response).includes('error');\r",
+									"pm.test('Error id',()=>{\r",
+									"pm.expect(true).to.eql(mensajedeerror);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/books?type=fictio",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "fictio"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener libro Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"const bookId=Object.keys(response).includes('id');\r",
+									"\r",
+									"pm.test('validar id',()=>{\r",
+									"    pm.expect(true).to.eql(bookId);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/books/:bookID",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"books",
+								":bookID"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"description": "Es obligatorio el ID",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "bookID",
+									"value": "{{bookId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Libro Id Falla",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"const bookId=Object.keys(response).includes('error');\r",
+									"\r",
+									"pm.test('Error id',()=>{\r",
+									"pm.expect(true).to.eql(bookId);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/books/:bookID",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"books",
+								":bookID"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"description": "Es obligatorio el ID",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "bookID",
+									"value": "{{bookId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todos los pedidos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Buscar valores en el cuerpo\", ()=> {\r",
+									"    pm.expect(pm.response.text()).to.include(\"javier\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/orders",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar Pedidos Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"const idOrdenes=Object.keys(response).includes('id');\r",
+									"\r",
+									"pm.test('validar id',()=>{\r",
+									"    pm.expect(true).to.eql(idOrdenes);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/orders/:idOrdenes",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders",
+								":idOrdenes"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "idOrdenes",
+									"value": "{{idOrdenes}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar Pedidos Id Fallo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"const pedidoId=Object.keys(response).includes('error');\r",
+									"\r",
+									"pm.test('Error id',()=>{\r",
+									"pm.expect(true).to.eql(pedidoId);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/orders/:idOrdenes",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders",
+								":idOrdenes"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "idOrdenes",
+									"value": "{{idOrdenes}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Registro",
+			"item": [
+				{
+					"name": "Regitrar Cliente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\",  ()=> {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"const token=Object.keys(response).includes('accessToken');\r",
+									"\r",
+									"pm.test('validar acceso al token ',()=>{\r",
+									"    pm.expect(true).to.eql(token);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"clientName\": \"Marcos\",\r\n   \"clientEmail\": \"jacho59@choucair.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/api-clients/",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"api-clients",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RegitrarClienteFallido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\",  ()=> {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									"const response=pm.response.json();\r",
+									"pm.test('Cliente ya registrado',()=>{\r",
+									"   pm.expect(response.error).to.eql('API client already registered. Try a different email.');\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"clientName\": \"Marcos\",\r\n   \"clientEmail\": \"jacho@choucair.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/api-clients/",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"api-clients",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Crear Orden",
+			"item": [
+				{
+					"name": "Crear Orden",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\",  ()=> {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"var respuesta = pm.response.json();\r",
+									"var validate = {\r",
+									"    \"items\": {\r",
+									"        \"created\": {\"type\":\"boolean\"},  \r",
+									"        \"orderId\": {\"type\":\"string\"}\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test('Validacion de la respuesa ', function () {\r",
+									"    pm.expect(tv4.validate(respuesta, validate)).to.be.true;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"bookId\": 5,\r\n  \"customerName\": \"javier\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/orders",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creacion de orden fallida",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\",  ()=> {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ide faltante o no valido\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing bookId.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"bookId\": 10,\r\n  \"customerName\": \"Javier\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/orders",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Eliminar",
+			"item": [
+				{
+					"name": "Elimianar un pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verificar código de estado 204, Petición DELETE Exitosa\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([204]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/orders/:idOrdenes",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders",
+								":idOrdenes"
+							],
+							"variable": [
+								{
+									"key": "idOrdenes",
+									"value": "{{idOrdenes}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Elimianar pedido fallo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verificar código de estado 204, Petición DELETE Exitosa\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+									"});\r",
+									"pm.test(\"Verficar Mensaje de error, con el Id de Orden N\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"     q = pm.globals.get(\"idOrdenes\");\r",
+									"    pm.expect(jsonData.error).to.eql(\"No order with id \"+q+\".\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{urlApi}}/orders/:idOrdenes",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders",
+								":idOrdenes"
+							],
+							"variable": [
+								{
+									"key": "idOrdenes",
+									"value": "{{idOrdenes}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actualizar",
+			"item": [
+				{
+					"name": "actualizar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\",  ()=> {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"const actualizarpedido=  {\r",
+									"\r",
+									"    customerName: '',\r",
+									"    createdBy:'',\r",
+									"    quantity: ''\r",
+									"}\r",
+									"\r",
+									"const body=JSON.parse(pm.request.body.raw);\r",
+									"const Actualizacion=JSON.stringify(Object.keys(actualizarpedido))===JSON.stringify(Object.keys(body));\r",
+									"\r",
+									"pm.test('Actualizando pedido',()=>{\r",
+									"        \r",
+									"        pm.expect(true).to.be.eql(Actualizacion)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n\r\n        \"customerName\": \"{{$randomFullName}}\",\r\n        \"createdBy\": \"{{$randomInt}}\",\r\n        \"quantity\": 2\r\n     \r\n}\r\n\r\n       ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlApi}}/orders/:idOrdenes",
+							"host": [
+								"{{urlApi}}"
+							],
+							"path": [
+								"orders",
+								":idOrdenes"
+							],
+							"variable": [
+								{
+									"key": "idOrdenes",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "3eb60b7e-3b16-4fe9-a7b6-6a36b4cdd737",
+		"name": "endpointCharacte",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19965346"
+	},
+	"item": [
+		{
+			"name": "Busqueda de todos los personajes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El código de estado es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Realiza búsqueda de personaje por nombre y verifica su Species\", function () {\r",
+							"    var res = pm.response.json();\r",
+							"    var name = res.results.find(n => n.name == pm.globals.get('name'))\r",
+							"    pm.expect(name.species).to.eql(\"Human\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlMorty}}/character",
+					"host": [
+						"{{urlMorty}}"
+					],
+					"path": [
+						"character"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paginación",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El código de estado es 200\", function () {\r",
+							"    pm.response.to.have.status(200)});\r",
+							"    \r",
+							"    pm.test(\"Se muesta un resultado obtenido\", function(){\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var idper=jsonData.results.find(x => x.id==169)\r",
+							"    console.log(idper)\r",
+							"    pm.expect(idper.name).to.eql(\"Jacob\")\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlMorty}}/character/?page=6",
+					"host": [
+						"{{urlMorty}}"
+					],
+					"path": [
+						"character",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Personaje por Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El código de estado es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"const response=pm.response.json();\r",
+							"const personID=Object.keys(response).includes('id');\r",
+							"\r",
+							"pm.test('validar id',()=>{\r",
+							"    pm.expect(true).to.eql(personID);\r",
+							"    console.log(\"id obtenido\"+personID)\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlMorty}}/character/{{idPersonaje}}",
+					"host": [
+						"{{urlMorty}}"
+					],
+					"path": [
+						"character",
+						"{{idPersonaje}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "idNoExistentesMultiples",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"El código de estado es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Obtine tamaño de la respuesta, si es igual a '0', \", function () {\r",
+							"var response = pm.response.json();\r",
+							"pm.expect(response.length).to.be.eql(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlMorty}}/character/1000,1500",
+					"host": [
+						"{{urlMorty}}"
+					],
+					"path": [
+						"character",
+						"1000,1500"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
