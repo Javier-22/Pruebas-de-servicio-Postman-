@@ -50,14 +50,16 @@
 						"exec": [
 							"pm.test(\"El código de estado es 200\", function () {\r",
 							"    pm.response.to.have.status(200)});\r",
-							"    \r",
-							"    pm.test(\"Se muesta un resultado obtenido\", function(){\r",
-							"    var jsonData = pm.response.json();\r",
-							"    var idper=jsonData.results.find(x => x.id==169)\r",
-							"    console.log(idper)\r",
-							"    pm.expect(idper.name).to.eql(\"Jacob\")\r",
-							"});\r",
 							"\r",
+							"    pm.test(\"Personajes obtenidos por página\", function () {\r",
+							"    const idsPersonajesObtenidosPorPagina = pm.response.json().results;\r",
+							"\r",
+							"    idsPersonajesObtenidosPorPagina.forEach(function (idPersonajePorPagina) {\r",
+							"        console.log(idPersonajePorPagina);\r",
+							"        pm.expect(idsPersonajesObtenidosPorPagina).to.include(idPersonajePorPagina);\r",
+							"    })\r",
+							"}); \r",
+							"    \r",
 							"\r",
 							"\r",
 							""
@@ -70,7 +72,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{urlMorty}}/character/?page=6",
+					"raw": "{{urlMorty}}/character/?page={{numPage}}",
 					"host": [
 						"{{urlMorty}}"
 					],
@@ -81,7 +83,7 @@
 					"query": [
 						{
 							"key": "page",
-							"value": "6"
+							"value": "{{numPage}}"
 						}
 					]
 				}
@@ -103,7 +105,6 @@
 							"\r",
 							"pm.test('validar id',()=>{\r",
 							"    pm.expect(true).to.eql(personID);\r",
-							"    console.log(\"id obtenido\"+personID)\r",
 							"})\r",
 							"\r",
 							"\r",
@@ -125,6 +126,54 @@
 					"path": [
 						"character",
 						"{{idPersonaje}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Personajes por Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar código de estado 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Validar varios ID\", function () {\r",
+							"    var ids= pm.globals.get('idMul').split(',').map(Number);\r",
+							"    var idsObtenidos= pm.response.json().map(id=>id.id)\r",
+							"    pm.expect(ids.length).to.eql(idsObtenidos.length);\r",
+							"    ids.forEach(function(idPer) {\r",
+							"        pm.expect(ids).to.include(idPer);        \r",
+							"    })\r",
+							"    console.log(\"ID's Obtenidos: \"+idsObtenidos);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlMorty}}/character/{{idMul}}",
+					"host": [
+						"{{urlMorty}}"
+					],
+					"path": [
+						"character",
+						"{{idMul}}"
 					]
 				}
 			},
@@ -154,13 +203,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{urlMorty}}/character/1000,1500",
+					"raw": "{{urlMorty}}/character/{{idNoExis}}",
 					"host": [
 						"{{urlMorty}}"
 					],
 					"path": [
 						"character",
-						"1000,1500"
+						"{{idNoExis}}"
 					]
 				}
 			},

@@ -113,7 +113,7 @@
 									"});\r",
 									"const response=pm.response.json();\r",
 									"const mensajedeerror=Object.keys(response).includes('error');\r",
-									"pm.test('Error id',()=>{\r",
+									"pm.test('Error',()=>{\r",
 									"pm.expect(true).to.eql(mensajedeerror);\r",
 									"});\r",
 									"\r",
@@ -233,13 +233,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{urlApi}}/books/:bookID",
+							"raw": "{{urlApi}}/books/:bookId1\n",
 							"host": [
 								"{{urlApi}}"
 							],
 							"path": [
 								"books",
-								":bookID"
+								":bookId1\n"
 							],
 							"query": [
 								{
@@ -251,8 +251,8 @@
 							],
 							"variable": [
 								{
-									"key": "bookID",
-									"value": "{{bookId}}"
+									"key": "bookId1\n",
+									"value": "{{bookId1}}"
 								}
 							]
 						}
@@ -271,7 +271,8 @@
 									"});\r",
 									"pm.test(\"Buscar valores en el cuerpo\", ()=> {\r",
 									"    pm.expect(pm.response.text()).to.include(\"javier\");\r",
-									"});"
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -391,7 +392,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\",  ()=> {\r",
+									"pm.test(\"Status code is 404\",  ()=> {\r",
 									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"const response=pm.response.json();\r",
@@ -421,13 +422,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{urlApi}}/orders/:idOrdenes",
+							"raw": "{{urlApi}}/orders/:idOrdenes1",
 							"host": [
 								"{{urlApi}}"
 							],
 							"path": [
 								"orders",
-								":idOrdenes"
+								":idOrdenes1"
 							],
 							"query": [
 								{
@@ -438,8 +439,8 @@
 							],
 							"variable": [
 								{
-									"key": "idOrdenes",
-									"value": "{{idOrdenes}}"
+									"key": "idOrdenes1",
+									"value": "{{idOrdenes1}}"
 								}
 							]
 						}
@@ -477,7 +478,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"clientName\": \"Marcos\",\r\n   \"clientEmail\": \"jacho59@choucair.com\"\r\n}\r\n",
+							"raw": "{\r\n   \"clientName\": \"Marcos\",\r\n   \"clientEmail\": \"jacho56@choucair.com\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -529,7 +530,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"clientName\": \"Marcos\",\r\n   \"clientEmail\": \"jacho@choucair.com\"\r\n}",
+							"raw": "{\r\n   \"clientName\": \"Marcos\",\r\n   \"clientEmail\": \"jacho34@choucair.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -582,6 +583,7 @@
 									"pm.test('Validacion de la respuesa ', function () {\r",
 									"    pm.expect(tv4.validate(respuesta, validate)).to.be.true;\r",
 									"});\r",
+									"\r",
 									"\r",
 									""
 								],
@@ -643,7 +645,8 @@
 									"\r",
 									"pm.test(\"ide faltante o no valido\", function () {\r",
 									"    pm.expect(pm.response.text()).to.include(\"Invalid or missing bookId.\");\r",
-									"});"
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -806,9 +809,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 204\",  ()=> {\r",
-									"    pm.response.to.have.status(204);\r",
-									"});\r",
 									"const actualizarpedido=  {\r",
 									"\r",
 									"    customerName: '',\r",
@@ -820,7 +820,6 @@
 									"const Actualizacion=JSON.stringify(Object.keys(actualizarpedido))===JSON.stringify(Object.keys(body));\r",
 									"\r",
 									"pm.test('Actualizando pedido',()=>{\r",
-									"        \r",
 									"        pm.expect(true).to.be.eql(Actualizacion)\r",
 									"});"
 								],
@@ -862,7 +861,7 @@
 							"variable": [
 								{
 									"key": "idOrdenes",
-									"value": ""
+									"value": "{{idOrdenes}}"
 								}
 							]
 						}
